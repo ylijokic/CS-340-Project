@@ -28,7 +28,7 @@ INSERT INTO `Machine`(`id`, `mach_name`, `mach_name_short`)
 VALUES (1, 'Eight Ball Deluxe', '8BD'), (2, 'AC/DC', 'ACD'), (3, 'Attack From Mars', 'AFM');
 
 --Update a Game to include what team won
-UPDATE `Game` WHERE `winning_team` = 'teamID'
+UPDATE `Game` SET 'winning_team' = `Team`('id') WHERE `winning_team` = 1;
 
 --Delete Teams from a Match
 DELETE FROM `Match` WHERE `home_team` = 10;

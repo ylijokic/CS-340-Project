@@ -11,8 +11,13 @@ app.use('/static', express.static('public'));
 app.set('view engine', 'handlebars');
 app.set('port', process.argv[2]);
 app.set('mysql', mysql);
+
 app.use('/team', require('./team.js'));
-app.use('/', express.static('public'));
+app.use('/bar', require('./bar.js'));
+app.use('/machine', require('./machine.js'));
+app.use('/match', require('./match.js'));
+app.use('/machine_bar', require('./machine_bar.js'));
+app.use('/', require('./home.js'));
 
 app.use(function (req, res) {
   res.status(404);

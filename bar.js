@@ -3,7 +3,7 @@ module.exports = function () {
     var router = express.Router();
 
     function getBar(res, mysql, context, complete) {
-        mysql.pool.query("SELECT id as id, name FROM Bar",
+        mysql.pool.query("SELECT id, name, street_addr, city, state FROM Bar",
             function (error, results, fields) {
                 if (error) {
                     res.write(JSON.stringify(error));
@@ -14,29 +14,16 @@ module.exports = function () {
             });
     }
 
-    function getTeams(res, mysql, context, complete) {
-        mysql.pool.query("SELECT Team.id, team_name, Bar.name AS home_bar_id FROM Team INNER JOIN Bar ON home_bar_id = Bar.id",
-            function (error, results, fields) {
-                if (error) {
-                    res.write(JSON.stringify(error));
-                    res.end();
-                }
-                context.team = results;
-                complete();
-            });
-    }
-
     router.get('/', function (req, res) {
         var callbackCount = 0;
         var context = {};
-        context.jsscripts = ["deleteteam.js", "filterteam.js", "searchteam.js"];
+        context.jsscripts = ["deleteBar.js", "filterBar.js", "searchBar.js"];
         var mysql = req.app.get('mysql');
-        getTeams(res, mysql, context, complete);
         getBar(res, mysql, context, complete);
         function complete() {
             callbackCount++;
-            if (callbackCount >= 2) {
-                res.render('team', context);
+            if (callbackCount >= 1) {
+                res.render('bar', context);
             }
 
         }
@@ -46,15 +33,15 @@ module.exports = function () {
         console.log(req.body.bar)
         console.log(req.body)
         var mysql = req.app.get('mysql');
-        var sql = "INSERT INTO Team (team_name, home_bar_id) VALUES (?,?)";
-        var inserts = [req.body.team_name, req.body.home_bar_id];
+        var sql = "INSERT INTO Bar (name, street_addr, city, state) VALUES (?,?,?,?)";
+        var inserts = [req.body.name, req.body.street_addr, req.body.city, req.body.state];
         sql = mysql.pool.query(sql, inserts, function (error, results, fields) {
             if (error) {
                 console.log(JSON.stringify(error))
                 res.write(JSON.stringify(error));
                 res.end();
             } else {
-                res.redirect('/team');
+                res.redirect('/bar');
             }
         });
     });

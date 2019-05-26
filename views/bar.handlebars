@@ -1,0 +1,21 @@
+<h3>Current bars:</h3>
+<table class="bar_table">
+    <thead>
+        <th>Name</th>
+        <th>Street Address</th>
+        <th>City</th>
+        <th>State</th>
+    </thead>
+    <tbody>
+        {{#each bar}}
+        <tr>
+            <td>{{name}}</td>
+            <td>{{street_addr}}</td>
+            <td>{{city}}</td>
+            <td>{{state}}</td>
+            <td><button onclick="deleteBar({{id}})">Delete</button></td>
+            <td><a href="/bar/{{id}}">Update</a></td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>

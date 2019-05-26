@@ -1,0 +1,25 @@
+<h3>List of Pinball Machines:</h3>
+<table class="machine_table">
+    <thead>
+        <th>Pinball Machine Name</th>
+        <th>Shortened Machine Name</th>
+    </thead>
+    <tbody>
+        {{#each machine}}
+        <tr>
+            <td>{{mach_name}}</td>
+            <td>{{mach_name_short}}</td>
+            <td><button onclick="deleteMachine({{id}})">Delete</button></td>
+            <td><a href="/machine/{{id}}">Update</a></td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+
+<h3>Add a new Pinball Machine:</h3>
+<form id="add_machine" action="/machine" method="post">
+    Pinball Machine Name: <input type="text" name="mach_name"><br>
+    Shortened Machine Name: <input type="text" name="mach_name_short"><br>
+    <input type="submit" value="Submit">
+</form>
+<br />

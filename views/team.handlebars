@@ -1,15 +1,7 @@
-<html>
-{{#each foo}}
-{{this}}
-{{/each}}
 <h3>Add a new team:</h3>
 <form id="add_team" action="/team" method="post">
     Team Name: <input type="text" name="team_name"><br>
-    Home Bar: <select name="home_bar">
-        {{#each bar}}
-        <option value="{{id}}">{{name}}</option>
-        {{/each}}
-    </select><br>
+    Home Bar: <input type="text" name="bar_name"><br>
     <input type="submit" value="Submit">
 </form>
 <br />
@@ -24,7 +16,7 @@
 </form> --}}
 
 <h3>Current teams:</h3>
-<table>
+<table class="team_table">
     <thead>
         <th>Team Name</th>
         <th>Home Bar</th>
@@ -40,5 +32,3 @@
         {{/each}}
     </tbody>
 </table>
-
-</html>

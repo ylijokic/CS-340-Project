@@ -1,0 +1,17 @@
+<h3>List of League Matches:</h3>
+<table class="match_table">
+    <thead>
+        <th></th>
+        <th>Date of Match</th>
+        <th>Location</th>
+    </thead>
+    <tbody>
+        {{#each match}}
+        <tr>
+            <td>{{match_date}}</td>
+            <td>{{location_id}}</td>
+            <td><a href="/match/{{id}}">Update</a></td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>

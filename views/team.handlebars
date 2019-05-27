@@ -1,7 +1,11 @@
 <h3>Add a new team:</h3>
 <form id="add_team" action="/team" method="post">
     Team Name: <input type="text" name="team_name"><br>
-    Home Bar: <input type="text" name="bar_name"><br>
+    Home Bar: <select name="home_bar_id">
+        {{#each bar}}
+        <option value="{{id}}">{{name}}</option>
+        {{/each}}
+    </select><br>
     <input type="submit" value="Submit">
 </form>
 <br />
@@ -22,10 +26,10 @@
         <th>Home Bar</th>
     </thead>
     <tbody>
-        {{#each team}}
+        {{#each teams}}
         <tr>
             <td>{{team_name}}</td>
-            <td>{{home_bar}}</td>
+            <td>{{home_bar_name}}</td>
             <td><button onclick="deleteTeam({{id}})">Delete</button></td>
             <td><a href="/team/{{id}}">Update</a></td>
         </tr>

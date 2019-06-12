@@ -1,3 +1,44 @@
+<nav>
+    <div class="nav-wrapper teal lighten-2">
+        <a class="brand-logo">Pinball League Database</a>
+        <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+        <ul id="nav-mobile" class="right hide-on-med-and-down">
+            <li><a href="/">Home</a></li>
+            <li><a href="/team">Teams</a></li>
+            <li><a href="/machine">Pinball Machines</a></li>
+            <li><a href="/bar">Bars</a></li>
+            <li><a href="/machine_bar">Pinball/Bar Relationship</a></li>
+            <li><a href="/match">Matches</a></li>
+        </ul>
+    </div>
+</nav>
+
+<ul class="sidenav" id="mobile-demo">
+    <li><a href="/">Home</a></li>
+    <li><a href="/team">Teams</a></li>
+    <li><a href="/machine">Pinball Machines</a></li>
+    <li><a href="/bar">Bars</a></li>
+    <li><a href="/machine_bar">Pinball/Bar Relationship</a></li>
+    <li><a href="/match">Matches</a></li>
+</ul>
+
+<h3>Add a new Bar:</h3>
+<form id="add_bar" action="/bar" method="post">
+    Bar Name: <input type="text" name="name"><br>
+    Street Address: <input type="text" name="street_addr"><br>
+    City: <input type="text" name="city"><br>
+    State: <input type="text" name="state"><br>
+    <input type="submit" value="Submit" class="btn">
+</form>
+<br>
+
+<h3>Search Bars by City Name:</h3>
+<form id='search_bar' action='' method=''>
+    <!--- this form does not submit directly, the button handles all the interaction with backend -->
+    <input id='city_search_string' type='text' name='city_search_string' value=''>
+    <input type="button" value="Search" onclick="searchBarsByCity()" class="btn">
+</form>
+
 <h3>Current bars:</h3>
 <table class="bar_table">
     <thead>
@@ -5,6 +46,8 @@
         <th>Street Address</th>
         <th>City</th>
         <th>State</th>
+        <th>Update Bar</th>
+        <th>Delete Bar</th>
     </thead>
     <tbody>
         {{#each bar}}
@@ -13,9 +56,22 @@
             <td>{{street_addr}}</td>
             <td>{{city}}</td>
             <td>{{state}}</td>
-            <td><button onclick="deleteBar({{id}})">Delete</button></td>
-            <td><a href="/bar/{{id}}">Update</a></td>
+            <td><a href="/bar/{{id}}" class="material-icons teal-text text-lighten-2">update</a></td>
+            <td><button onclick="deleteBar({{id}})" class="material-icons red-text btn-flat">clear</button></td>
         </tr>
         {{/each}}
     </tbody>
 </table>
+<br>
+
+
+
+<script>
+    function searchBarsByCity() {
+        //get the city name 
+        var city_search_string = document.getElementById('city_search_string').value
+        console.log(city_search_string);
+        //construct the URL and redirect to it
+        window.location = '/bar/search/' + encodeURI(city_search_string)
+    }
+</script>

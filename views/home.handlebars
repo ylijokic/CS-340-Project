@@ -1,24 +1,76 @@
-<h1>Pinball League Database</h1>
-<div>
-    <!--Create Links to website pages-->
-    <ul>
-        {{!-- <li>
-            <a href="/">Create New Match Scorecard</a>
-        </li>
-        <li>
-            <a href="/">Read Team Standings</a>
-        </li> --}}
-        <li>
-            <a href="/team">View Teams</a>
-        </li>
-        <li>
-            <a href="/machine">View Pinball Machines</a>
-        </li>
-        <li>
-            <a href="/bar">View Bars</a>
-        </li>
-        {{!-- <li>
-            <a href="/machine_bar">View What Bars Pinball Machines are at</a>
-        </li> --}}
-    </ul>
+<nav class="nav-extended">
+    <div class="nav-wrapper teal lighten-2">
+        <a class="brand-logo">Pinball League Database</a>
+        <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+        <ul id="nav-mobile" class="right hide-on-med-and-down">
+            <li><a href="/">Home</a></li>
+            <li><a href="/team">Teams</a></li>
+            <li><a href="/machine">Pinball Machines</a></li>
+            <li><a href="/bar">Bars</a></li>
+            <li><a href="/machine_bar">Pinball/Bar Relationship</a></li>
+            <li><a href="/match">Matches</a></li>
+        </ul>
+    </div>
+</nav>
+
+<ul class="sidenav" id="mobile-demo">
+    <li><a href="/">Home</a></li>
+    <li><a href="/team">Teams</a></li>
+    <li><a href="/machine">Pinball Machines</a></li>
+    <li><a href="/bar">Bars</a></li>
+    <li><a href="/machine_bar">Pinball/Bar Relationship</a></li>
+    <li><a href="/match">Matches</a></li>
+</ul>
+
+<div class="card">
+    <div class="card-image waves-effect waves-block waves-light">
+        <img class="activator" src="">
+    </div>
+    <div class="card-content">
+        <span class="card-title activator grey-text text-darken-4">Teams<i class="material-icons right">more_vert</i></span>
+        <p><a href="/team">Link to Teams Table</a></p>
+    </div>
+    <div class="card-reveal">
+        <span class="card-title grey-text text-darken-4">Teams<i class="material-icons right">close</i></span>
+        <p>The database allows users to view, add, and update Teams in the Pinball League.</p>
+    </div>
+</div>
+<div class="card">
+    <div class="card-image waves-effect waves-block waves-light">
+        <img class="activator" src="">
+    </div>
+    <div class="card-content">
+        <span class="card-title activator grey-text text-darken-4">Pinball Machines<i class="material-icons right">more_vert</i></span>
+        <p><a href="/machine">Link to Pinball Machines Table</a></p>
+    </div>
+    <div class="card-reveal">
+        <span class="card-title grey-text text-darken-4">Pinball Machines<i class="material-icons right">close</i></span>
+        <p>The database allows users to view, add, and delete Pinball Machines in the Pinball League.</p>
+    </div>
+</div>
+<div class="card">
+    <div class="card-image waves-effect waves-block waves-light">
+        <img class="activator" src="">
+    </div>
+    <div class="card-content">
+        <span class="card-title activator grey-text text-darken-4">Bars<i class="material-icons right">more_vert</i></span>
+        <p><a href="/bar">Link to Bars Table</a></p>
+    </div>
+    <div class="card-reveal">
+        <span class="card-title grey-text text-darken-4">Bars<i class="material-icons right">close</i></span>
+        <p>The database allows users to view, add, and update Bars in the Pinball League.</p>
+    </div>
+</div>
+<div class="card">
+    <div class="card-image waves-effect waves-block waves-light">
+        <img class="activator" src="">
+    </div>
+    <div class="card-content">
+        <span class="card-title activator grey-text text-darken-4">Pinball/Bar Relationship<i class="material-icons right">more_vert</i></span>
+        <p><a href="/machine_bar">Link to Pinball Machine/Bar Relationship</a></p>
+    </div>
+    <div class="card-reveal">
+        <span class="card-title grey-text text-darken-4">Pinball/Bar Relationship<i class="material-icons right">close</i></span>
+        <p>The database allows users to view, add, update, and delete this many-many relationship.</p>
+    </div>
 </div>

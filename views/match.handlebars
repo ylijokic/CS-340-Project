@@ -1,16 +1,50 @@
+<nav>
+    <div class="nav-wrapper teal lighten-2">
+        <a class="brand-logo">Pinball League Database</a>
+        <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+        <ul id="nav-mobile" class="right hide-on-med-and-down">
+            <li><a href="/">Home</a></li>
+            <li><a href="/team">Teams</a></li>
+            <li><a href="/machine">Pinball Machines</a></li>
+            <li><a href="/bar">Bars</a></li>
+            <li><a href="/machine_bar">Pinball/Bar Relationship</a></li>
+            <li><a href="/match">Matches</a></li>
+        </ul>
+    </div>
+</nav>
+<ul class="sidenav" id="mobile-demo">
+    <li><a href="/">Home</a></li>
+    <li><a href="/team">Teams</a></li>
+    <li><a href="/machine">Pinball Machines</a></li>
+    <li><a href="/bar">Bars</a></li>
+    <li><a href="/machine_bar">Pinball/Bar Relationship</a></li>
+    <li><a href="/match">Matches</a></li>
+</ul>
+
+<h3>Add a new Match:</h3>
+<form id="add_match" action="/match" method="post">
+    Team Name: <input type="date" name="match_date"><br>
+    Home Bar: <select name="location_id">
+        {{#each bar}}
+        <option value="{{id}}">{{name}}</option>
+        {{/each}}
+    </select><br>
+    <input type="submit" value="Submit" class="btn">
+</form>
+<br>
 <h3>List of League Matches:</h3>
 <table class="match_table">
     <thead>
-        <th></th>
         <th>Date of Match</th>
-        <th>Location</th>
+        <th>Location of Match</th>
+        <th>Delete Match</th>
     </thead>
     <tbody>
-        {{#each match}}
+        {{#each matches}}
         <tr>
             <td>{{match_date}}</td>
-            <td>{{location_id}}</td>
-            <td><a href="/match/{{id}}">Update</a></td>
+            <td>{{location_name}}</td>
+            <td><button onclick="deleteMatch({{id}})" class="material-icons red-text btn-flat">clear</button></td>
         </tr>
         {{/each}}
     </tbody>

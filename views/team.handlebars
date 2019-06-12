@@ -1,4 +1,27 @@
-<h3>Add a new team:</h3>
+<nav>
+    <div class="nav-wrapper teal lighten-2">
+        <a class="brand-logo">Pinball League Database</a>
+        <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+        <ul id="nav-mobile" class="right hide-on-med-and-down">
+            <li><a href="/">Home</a></li>
+            <li><a href="/team">Teams</a></li>
+            <li><a href="/machine">Pinball Machines</a></li>
+            <li><a href="/bar">Bars</a></li>
+            <li><a href="/machine_bar">Pinball/Bar Relationship</a></li>
+            <li><a href="/match">Matches</a></li>
+        </ul>
+    </div>
+</nav>
+<ul class="sidenav" id="mobile-demo">
+    <li><a href="/">Home</a></li>
+    <li><a href="/team">Teams</a></li>
+    <li><a href="/machine">Pinball Machines</a></li>
+    <li><a href="/bar">Bars</a></li>
+    <li><a href="/machine_bar">Pinball/Bar Relationship</a></li>
+    <li><a href="/match">Matches</a></li>
+</ul>
+
+<h3>Add a new Team:</h3>
 <form id="add_team" action="/team" method="post">
     Team Name: <input type="text" name="team_name"><br>
     Home Bar: <select name="home_bar_id">
@@ -6,33 +29,27 @@
         <option value="{{id}}">{{name}}</option>
         {{/each}}
     </select><br>
-    <input type="submit" value="Submit">
+    <input type="submit" value="Submit" class="btn">
 </form>
 <br />
-<!--- Might want to add a feature to sort teams by number of wins here --->
-
-
-{{!-- <form id='search_team' action='' method=''>
-    <!--- this form does not submit directly, the button handles all the interaction with backend -->
-    <label> Search people for first name starting with:</label>
-    <input id='first_name_search_string' type='text' name='first_name_search_string' value=''>
-    <input type="button" value="Search" onclick="searchPeopleByFirstName()">
-</form> --}}
 
 <h3>Current teams:</h3>
 <table class="team_table">
     <thead>
         <th>Team Name</th>
         <th>Home Bar</th>
+        <th>Update Team</th>
+        <th>Delete Team</th>
     </thead>
     <tbody>
         {{#each teams}}
         <tr>
             <td>{{team_name}}</td>
             <td>{{home_bar_name}}</td>
-            <td><button onclick="deleteTeam({{id}})">Delete</button></td>
-            <td><a href="/team/{{id}}">Update</a></td>
+            <td><a href="/team/{{id}}" class="material-icons teal-text text-lighten-2">update</a></td>
+            <td><button onclick="deleteTeam({{id}})" class="material-icons red-text btn-flat">clear</button></td>
         </tr>
         {{/each}}
     </tbody>
 </table>
+<br>

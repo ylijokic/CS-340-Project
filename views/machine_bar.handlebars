@@ -1,16 +1,72 @@
-<h3> List of what Bars Pinball Machines are located </h3>
+<nav>
+    <div class="nav-wrapper teal lighten-2">
+        <a class="brand-logo">Pinball League Database</a>
+        <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+        <ul id="nav-mobile" class="right hide-on-med-and-down">
+            <li><a href="/">Home</a></li>
+            <li><a href="/team">Teams</a></li>
+            <li><a href="/machine">Pinball Machines</a></li>
+            <li><a href="/bar">Bars</a></li>
+            <li><a href="/machine_bar">Pinball/Bar Relationship</a></li>
+            <li><a href="/match">Matches</a></li>
+        </ul>
+    </div>
+</nav>
+
+<ul class="sidenav" id="mobile-demo">
+    <li><a href="/">Home</a></li>
+    <li><a href="/team">Teams</a></li>
+    <li><a href="/machine">Pinball Machines</a></li>
+    <li><a href="/bar">Bars</a></li>
+    <li><a href="/machine_bar">Pinball/Bar Relationship</a></li>
+    <li><a href="/match">Matches</a></li>
+</ul>
+
+<div>
+    <h3>Add a Pinball Machine to a Bar:</h3>
+    <form id="addMachineBar" action="/machine_bar" method="post">
+
+        Pinball Machine Name: <select name="machine_id">
+            {{#each machine}}
+            <option value="{{machine_id}}">{{mach_name}}</option>
+            {{/each}}
+        </select><br>
+        Bar Name: <select name="bar_id">
+            {{#each bar}}
+            <option value="{{bar_id}}">{{name}}</option>
+            {{/each}}
+        </select><br>
+        <div>
+            <input type="submit" value="Submit" class="btn">
+        </div>
+    </form>
+</div>
+
+{{!-- <form id='filter_machine_bar' action='' method=''>
+    <!--- this form does not submit directly, the button handles all the interaction with backend -->
+    <label> Filter Pinball Machines by Bar </label>
+    <select id='machine_bar_filter' name="bar_id">
+        {{#each bar}}
+        <option value="{{id}}">{{name}}</option>
+        {{/each}}
+    </select><br>
+    <input type="button" value="Filter" onclick="filterMachineBarByName()" class="btn">
+</form> --}}
+
+<h3>Pinball Machines and Bars Relationship</h3>
+<h6>Sorted By Pinball Machine Name</h6>
 <table class="machine_bar">
     <thead>
         <th>Bar</th>
         <th>Pinball Machine</th>
+        <th>Delete a Pinball Machine From Bar</th>
     </thead>
     <tbody>
         {{#each machine_bar}}
         <tr>
-            <td>{{bar_id}}</td>
-            <td>{{machine_id}}</td>
-            <td><button onclick="deleteMachineBar({{bar_id}},{{machine_id}})">Delete</button></td>
-            <td><a href='#' onclick='javascript: alert("You can implement it just like the Add form.")'>Update</a></td>
+            <td>{{mach_name}}</td>
+            <td>{{bar_name}}</td>
+            <td><button onclick="deleteMachineBar({{machine_id}} , {{bar_id}})" class="material-icons red-text btn-flat">clear</button></td>
         </tr>
         {{else}}
         <b> No Pinball machines at any Bars found!</b>
@@ -19,19 +75,29 @@
     </tbody>
 </table>
 
-<h1>Add a Pinball Machine to a Bar:</h1>
-<form id="addMachineBar" action="/machine_bar" method="post">
-    Bar Name: <select name="bar_id">
-        {{#each bar}}
-        <option value="{{bar_id}}">{{bar_name}}</option>
-        {{/each}}
-    </select><br>
-    Pinball Machine Names:<sup>Multi-select</sup> <select multiple name="machine_id">
-        {{#each machine}}
-        <option value="{{machine_id}}">{{mach_name}}</option>
-        {{/each}}
-    </select><br>
-    <div class="form-relation">
-        <input type="submit" value="Submit" class="btn btn-primary">
-    </div>
-</form>
+
+
+<script>
+    function filterMachineBarByName() {
+        var machine_bar_id = document.getElementById('machine_bar_filter').value
+        //construct the URL and redirect to it
+        window.location = '/machine_bar/filter/' + parseInt(machine_bar_id)
+    }
+</script>
+
+<script>
+    function deleteMachineBar(machine_id, bar_id) {
+        $.ajax({
+            url: '/machine_bar/machine_id/' + machine_id + '/bar_id/' + bar_id,
+            type: 'DELETE',
+            success: function (result) {
+                if (result.responseText != undefined) {
+                    alert(result.responseText)
+                }
+                else {
+                    window.location.reload(true)
+                }
+            }
+        })
+    };
+</script>

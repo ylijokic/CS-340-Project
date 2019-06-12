@@ -1,25 +1,48 @@
+<nav>
+    <div class="nav-wrapper teal lighten-2">
+        <a class="brand-logo">Pinball League Database</a>
+        <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+        <ul id="nav-mobile" class="right hide-on-med-and-down">
+            <li><a href="/">Home</a></li>
+            <li><a href="/team">Teams</a></li>
+            <li><a href="/machine">Pinball Machines</a></li>
+            <li><a href="/bar">Bars</a></li>
+            <li><a href="/machine_bar">Pinball/Bar Relationship</a></li>
+            <li><a href="/match">Matches</a></li>
+        </ul>
+    </div>
+</nav>
+<ul class="sidenav" id="mobile-demo">
+    <li><a href="/">Home</a></li>
+    <li><a href="/team">Teams</a></li>
+    <li><a href="/machine">Pinball Machines</a></li>
+    <li><a href="/bar">Bars</a></li>
+    <li><a href="/machine_bar">Pinball/Bar Relationship</a></li>
+    <li><a href="/match">Matches</a></li>
+</ul>
+
+<h3>Add a new Pinball Machine:</h3>
+<form id="add_machine" action="/machine" method="post">
+    Pinball Machine Name: <input type="text" name="mach_name"><br>
+    Shortened Machine Name: <input type="text" name="mach_name_short"><br>
+    <input type="submit" value="Submit" class="btn">
+</form>
+<br />
+
 <h3>List of Pinball Machines:</h3>
 <table class="machine_table">
     <thead>
         <th>Pinball Machine Name</th>
         <th>Shortened Machine Name</th>
+        <th>Delete Pinball Machine</th>
     </thead>
     <tbody>
         {{#each machine}}
         <tr>
             <td>{{mach_name}}</td>
             <td>{{mach_name_short}}</td>
-            <td><button onclick="deleteMachine({{id}})">Delete</button></td>
-            <td><a href="/machine/{{id}}">Update</a></td>
+            <td><button onclick="deleteMachine({{id}})" class="material-icons red-text btn-flat">clear</button></td>
         </tr>
         {{/each}}
     </tbody>
 </table>
-
-<h3>Add a new Pinball Machine:</h3>
-<form id="add_machine" action="/machine" method="post">
-    Pinball Machine Name: <input type="text" name="mach_name"><br>
-    Shortened Machine Name: <input type="text" name="mach_name_short"><br>
-    <input type="submit" value="Submit">
-</form>
-<br />

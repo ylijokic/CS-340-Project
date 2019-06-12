@@ -2,7 +2,7 @@ module.exports = function () {
     var express = require('express');
     var router = express.Router();
 
-    function getBar(res, mysql, context, complete) {
+    function getBars(res, mysql, context, complete) {
         mysql.pool.query("SELECT id as id, name FROM Bar",
             function (error, results, fields) {
                 if (error) {
@@ -45,7 +45,7 @@ module.exports = function () {
         context.jsscripts = ["deleteteam.js", "filterteam.js", "searchteam.js"];
         var mysql = req.app.get('mysql');
         getTeams(res, mysql, context, complete);
-        getBar(res, mysql, context, complete);
+        getBars(res, mysql, context, complete);
         function complete() {
             callbackCount++;
             if (callbackCount >= 2) {
@@ -60,7 +60,7 @@ module.exports = function () {
         context.jsscripts = ["selectedBar.js", "updateTeam.js"];
         var mysql = req.app.get('mysql');
         getSingleTeam(res, mysql, context, req.params.id, complete);
-        getBar(res, mysql, context, complete);
+        getBars(res, mysql, context, complete);
         function complete() {
             callbackCount++;
             if (callbackCount >= 2) {
@@ -105,6 +105,22 @@ module.exports = function () {
             }
         });
     });
+
+    router.delete('/:id', function (req, res) {
+        var mysql = req.app.get('mysql');
+        var sql = "DELETE FROM Team WHERE id=?";
+        var inserts = [req.params.id];
+        sql = mysql.pool.query(sql, inserts, function (error, results, fields) {
+            if (error) {
+                console.log(error)
+                res.write(JSON.stringify(error));
+                res.status(400);
+                res.end();
+            } else {
+                res.status(202).end();
+            }
+        })
+    })
 
     return router;
 }();

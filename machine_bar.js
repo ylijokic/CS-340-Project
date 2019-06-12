@@ -3,7 +3,7 @@ module.exports = function () {
     var router = express.Router();
 
     function getBar(res, mysql, context, complete) {
-        mysql.pool.query("SELECT id, name, street_addr, city, state FROM Bar",
+        mysql.pool.query("SELECT id AS bar_id, name, street_addr, city, state FROM Bar",
             function (error, results, fields) {
                 if (error) {
                     res.write(JSON.stringify(error));
@@ -15,7 +15,7 @@ module.exports = function () {
     }
 
     function getMachines(res, mysql, context, complete) {
-        mysql.pool.query("SELECT id, mach_name, mach_name_short FROM Machine",
+        mysql.pool.query("SELECT id AS machine_id, mach_name, mach_name_short FROM Machine",
             function (error, results, fields) {
                 if (error) {
                     res.write(JSON.stringify(error));
@@ -26,15 +26,31 @@ module.exports = function () {
             });
     }
 
+
     //This SQL Query in this function is wrong and will cause an error
     function getMachineBars(res, mysql, context, complete) {
-        sql = "SELECT bar_id, machine_id, CONCAT name AS name, mach_name AS machine FROM Bar INNER JOIN Machine_Bar on Bar.id = Machine_Bar.bar_id INNER JOIN Machine on Machine.id = Machine_Bar.machine_id ORDER BY name, machine"
+        sql = "SELECT Machine.id, mach_name, Bar.id, Bar.name AS bar_name FROM Bar INNER JOIN Machine_Bar ON Bar.id = bar_id INNER JOIN Machine ON machine_id = Machine.id ORDER BY mach_name ASC;";
         mysql.pool.query(sql, function (error, results, fields) {
             if (error) {
                 res.write(JSON.stringify(error));
                 res.end()
             }
-            context.people_with_certs = results
+            context.machine_bar = results
+            complete();
+        });
+    }
+
+    function getMachineBarsByName(req, res, mysql, context, complete) {
+        // var query = "SELECT Machine.id, mach_name, Bar.id, Bar.name AS bar_name FROM Bar INNER JOIN Machine_Bar ON Bar.id = bar_id INNER JOIN Machine ON machine_id = Machine.id  WHERE Bar.bar_name = '?' ORDER BY mach_name ASC;";
+        var query = "SELECT Machine.id, mach_name FROM Machine INNER JOIN Machine_Bar ON Machine.id = machine_id INNER JOIN Bar ON bar_id = Bar.id WHERE Bar.id=?;"
+        console.log(req.params)
+        var inserts = [req.params.bar_id]
+        mysql.pool.query(query, inserts, function (error, results, fields) {
+            if (error) {
+                res.write(JSON.stringify(error));
+                res.end();
+            }
+            context.machine_bar = results;
             complete();
         });
     }
@@ -42,9 +58,8 @@ module.exports = function () {
     router.get('/', function (req, res) {
         var callbackCount = 0;
         var context = {};
-        context.jsscripts = ["deleteBar.js"];
+        context.jsscripts = ["filterMachine_Bar.js"];
         var mysql = req.app.get('mysql');
-        var handlebars_file = 'machine_bar';
 
         getBar(res, mysql, context, complete);
         getMachines(res, mysql, context, complete);
@@ -52,17 +67,35 @@ module.exports = function () {
         function complete() {
             callbackCount++;
             if (callbackCount >= 3) {
-                res.render(handlebars_file, context);
+                res.render('machine_bar', context);
             }
 
         }
     });
 
-    //Need to work on this POST request more
+    router.get('/filter/:bar_id', function (req, res) {
+        var callbackCount = 0;
+        var context = {};
+        context.jsscripts = ["deleteMachine_Bar.js", "filterMachine_Bar.js"];
+        var mysql = req.app.get('mysql');
+        getMachineBarsByName(req, res, mysql, context, complete);
+        getMachines(res, mysql, context, complete);
+        getMachineBars(res, mysql, context, complete);
+        getBar(res, mysql, context, complete);
+        function complete() {
+            callbackCount++;
+            if (callbackCount >= 4) {
+                res.render('machine_bar', context);
+            }
+        }
+    });
+
+
+
     router.post('/', function (req, res) {
         var mysql = req.app.get('mysql');
-        var sql = "INSERT INTO Bar (name, street_addr, city, state) VALUES (?,?,?,?)";
-        var inserts = [req.body.name, req.body.street_addr, req.body.city, req.body.state];
+        var sql = "INSERT INTO Machine_Bar (machine_id, bar_id) VALUES (?,?)";
+        var inserts = [req.body.machine_id, req.body.bar_id];
         sql = mysql.pool.query(sql, inserts, function (error, results, fields) {
             if (error) {
                 console.log(JSON.stringify(error))
@@ -74,13 +107,13 @@ module.exports = function () {
         });
     });
 
-    router.delete('/bar_id/:bar_id/machine_id/:machine_id', function (req, res) {
+    router.delete('/machine_id/:machine_id/bar_id/:bar_id', function (req, res) {
 
-        console.log(req.params.bar_id)
         console.log(req.params.machine_id)
+        console.log(req.params.bar_id)
         var mysql = req.app.get('mysql');
-        var sql = "DELETE FROM Machine_Bar WHERE bar_id = ? AND machine_id = ?";
-        var inserts = [req.params.bar_id, req.params.machine_id];
+        var sql = "DELETE FROM Machine_Bar WHERE machine_id =? AND bar_id =?";
+        var inserts = [req.params.machine_id, req.params.bar_id];
         sql = mysql.pool.query(sql, inserts, function (error, results, fields) {
             if (error) {
                 res.write(JSON.stringify(error));
